@@ -71,6 +71,24 @@ namespace zelix::stl
                 buffer = Allocator::reallocate(buffer, len, capacity);
             }
 
+            int cmp(const string &other)
+            {
+                // Handle uninitialized memory
+                if (other.len == 0 || len == 0) return -1;
+
+                // Compare
+                const size_t min_len = other->len < len ? other->len : len;
+                const auto res = memcmp(other.buffer, buffer, min_len);
+                if (res == 0)
+                {
+                    if (other.len < len) return -1;
+                    if (other.len > len) return 1;
+                }
+
+                // Return the result directly
+                return res;
+            }
+
         public:
             /**
              * @brief Default constructor. Initializes an empty string using stack memory.
@@ -498,22 +516,22 @@ namespace zelix::stl
 
             auto operator<(const string &other) const
             {
-                return strcmp(other.c_str(), c_str()) < 0;
+                return cmp(other) < 0;
             }
 
             auto operator>(const string &other) const
             {
-                return strcmp(other.c_str(), c_str()) > 0;
+                return cmp(other) > 0;
             }
 
             auto operator>=(const string &other) const
             {
-                return strcmp(other.c_str(), c_str()) >= 0;
+                return cmp(other) >= 0;
             }
 
             auto operator<=(const string &other) const
             {
-                return strcmp(other.c_str(), c_str()) <= 0;
+                return cmp(other) <= 0;
             }
 
             /**
