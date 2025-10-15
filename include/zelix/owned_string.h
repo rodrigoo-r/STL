@@ -496,6 +496,26 @@ namespace zelix::stl
                 return result;
             }
 
+            auto operator<(const string &other) const
+            {
+                return strcmp(other.c_str(), c_str()) < 0;
+            }
+
+            auto operator>(const string &other) const
+            {
+                return strcmp(other.c_str(), c_str()) > 0;
+            }
+
+            auto operator>=(const string &other) const
+            {
+                return strcmp(other.c_str(), c_str()) >= 0;
+            }
+
+            auto operator<=(const string &other) const
+            {
+                return strcmp(other.c_str(), c_str()) <= 0;
+            }
+
             /**
              * @brief Destructor. Releases heap memory if allocated.
              */
